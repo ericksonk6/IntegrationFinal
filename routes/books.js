@@ -12,37 +12,39 @@ let router = express.Router();
 // For the Data Model
 let BookSchema = require('../models/books');
 
-
+//
 function HandleError(response, reason, message, code){
     console.log('ERROR: ' + reason);
     response.status(code || 500).json({"error:": message});
 }
 
+
 router.post('/', (request, response, next) => {
     let newBook = request.body;
     //console.log(request.body);
-    if (!newBook.name || !newBook.author || !newBook.isbn){
-        HandleError(response, 'Missing Info', 'Form data missing', 500);
+
+    //checks if there is the correct number of data
+    if (!newBook.isbn || !newBook.author || !newBook.price || !newBook.name) {
+            HandleError(response, 'Missing Info', 'Form data missing', 500);
     }
-    else{
-        let book = new BookSchema({
-            name: newBook.name,
-            author: newBook.author,
-            price: newBook.price,
-            isbn: newBook.isbn,
+       else {
+            let book = new BookSchema({
+                isbn: newBook.isbn,
+                name: newBook.name,
+                author: newBook.author,
+                price: newBook.price,
+            });
 
-        });
 
-
-        book.save((error) => {
-            if (error){
-                response.send({"error": error});
-            }else{
-                response.send({"isbn": book.isbn});
-            }
-        });
-    }
-});
+            book.save((error) => {
+                if (error) {
+                    response.send({"error": error});
+                } else {
+                    response.send({"isbn": book.isbn});
+                }
+            });
+        }
+            });
 
 
 router.get('/', (request, response, next) => {
@@ -137,4 +139,5 @@ router.delete('/:isbn', (request, response, next) =>{
             }
         });
 });
+
 module.exports = router;
