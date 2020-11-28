@@ -27,12 +27,17 @@ router.post('/', (request, response, next) => {
     if (!newBook.isbn || !newBook.author || !newBook.price || !newBook.name) {
             HandleError(response, 'Missing Info', 'Form data missing', 500);
     }
+
+    const ISBN = require( 'isbn-validate' );
+    if(!ISBN.Validate(newBook.isbn)){
+        HandleError(response, 'Missing Info', 'invalid isbn', 404);
+    }
        else {
             let book = new BookSchema({
-                isbn: newBook.isbn,
                 name: newBook.name,
                 author: newBook.author,
-                price: newBook.price,
+                isbn: newBook.isbn,
+                price: newBook.price
             });
 
 
