@@ -1,3 +1,4 @@
+var cors = require('cors');
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -10,6 +11,7 @@ var indexRouter = require('./routes/index');
 var booksRouter = require('./routes/books'); //load the router of books
 
 var app = express();
+app.use(cors());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

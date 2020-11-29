@@ -102,6 +102,7 @@ router.get('/:isbn', (request, response, next) =>{
         });
 });
 
+
 router.patch('/:isbn', (request, response, next) =>{
     BookSchema
         .findOne({"isbn": request.params.isbn}, (error, result) =>{
@@ -144,5 +145,21 @@ router.delete('/:isbn', (request, response, next) =>{
             }
         });
 });
-
+// router.delete('/:id', (request, response, next) =>{
+//     BookSchema
+//         .findById(request.params.id, (error, result)=>{
+//             if (error) {
+//                 response.status(500).send(error);
+//             }else if (result){
+//                 result.remove((error)=>{
+//                     if (error){
+//                         response.status(500).send(error);
+//                     }
+//                     response.send({"deletedId": request.params.id});
+//                 });
+//             }else{
+//                 response.status(404).send({"id": request.params.id, "error":  "Not Found"});
+//             }
+//         });
+// });
 module.exports = router;
