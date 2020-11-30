@@ -45,7 +45,7 @@ router.post('/', (request, response, next) => {
                 if (error) {
                     response.send({"error": error});
                 } else {
-                    response.send({"isbn": book.isbn});
+                    response.send({"isbn": newBook.isbn});
                 }
             });
         }
@@ -54,17 +54,20 @@ router.post('/', (request, response, next) => {
 
 router.get('/', (request, response, next) => {
     let author = request.query['author'];
+
     if (author){
         BookSchema
             .find({"author": author})
             .exec( (error, books) => {
                 if (error){
-                    response.send({"error": error});
+                    response.status(500).send({"error": error});
                 }else{
                     response.send(books);
                 }
             });
-    }else{
+    }
+
+    else{
         BookSchema
             .find()
             .exec( (error, books) => {
